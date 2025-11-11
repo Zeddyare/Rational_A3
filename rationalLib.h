@@ -39,6 +39,7 @@ public:
 
     //Overload: <<
     //Copied over from courses
+    void print(std::ostream& os = std::cout) const;
     friend std::ostream& operator<<(std::ostream& os, const RationalNum& s);
 
     //Driver: Demonstrate functionality of everything
