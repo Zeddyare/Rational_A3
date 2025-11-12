@@ -5,6 +5,8 @@
 #include "rationalLib.h"
 #include <iostream>
 #include <string>
+#include <sstream>
+#include <regex>
 
 RationalNum::RationalNum(): _num(0), _den(1) {
     std::cout << "Default Constructor" << std::endl;
@@ -23,9 +25,35 @@ RationalNum::RationalNum(int whole): _num(whole), _den(1) {
 
 //Constructor 3: String constructor takes a string rational or whole number and makes a rational number
 RationalNum::RationalNum(const std::string& frac) {
-    std::cout << "String Constructor (Parsed Rational)" << std::endl;
+    std::cout << "\nString Constructor (Parsed Rational)" << std::endl;
 
-    //TODO: Create function to build rational from string
+    static const std::regex check(R"(^\s*[+-]?\d+\s*(/\s*[+-]?\d+\s*)?$)");
+    int n, d;
+    char separator;
+
+    if (std::regex_match(frac, check)) {
+        std::stringstream ss(frac);
+        ss >> n;
+        if (ss >> separator) {
+            ss >> d;
+            _num = n;
+            _den = d;
+        } else { //Catches whole/single number entry
+            _num = n;
+            _den = 1;
+        }
+
+        if (_den == 0) throw std::invalid_argument("Denominator must not be zero");
+        normalize();
+    } else {
+        std::stringstream ss(frac);
+        if (!(ss >> n)) throw std::invalid_argument("Invalid whole number");
+        ss >> std::ws;
+        if (!ss.eof()) throw std::invalid_argument("Invalid whole number");
+        _num = n;
+        _den = 1;
+        normalize();
+    }
 }
 
 // Comparisons (friends so they can access internals)

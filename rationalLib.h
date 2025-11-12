@@ -18,8 +18,6 @@ public:
     //Constructor 1: take 2 arguments to set member values of Rational object to legitimate values
     RationalNum(int num, int denom);
 
-    //Constructor 2: Initializes rational object to rational number
-    RationalNum(const RationalNum&, int num, int denom);
 
     //Constructor 3: String constructor takes a string rational or whole number and makes a rational number
     explicit RationalNum(const std::string& frac);
